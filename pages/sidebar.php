@@ -20,18 +20,17 @@
                 <li class="nav-item">
                     <a href="index.php?halaman=dashboard" class="nav-link active">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>dashboard</p>
+                        <p>Dashboard</p>
                     </a>
                 </li>
 
-                <li class="nav-header"></li>
-
-                <!-- BAGIAN kelas -->
-                <li class="nav-item">
+                <li class="nav-header">Data </li>
+                
+                <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-chalkboard-teacher"></i>
                         <p>
-                            data kelas
+                            Data Kelas
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -39,24 +38,29 @@
                         <li class="nav-item">
                             <a href="index.php?halaman=kelas" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>index kelas</p>
+                                <p>Index Kelas</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="index.php?halaman=tambahkelas" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>tambah kelas</p>
+                                <p>Tambah Kelas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?halaman=kelas" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Edit/Ubah Kelas</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <!-- BAGIAN siswa-->
 
-                <li class="nav-item">
+                <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-user-graduate"></i>
                         <p>
-                            data siswa
+                            Data Siswa
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -64,57 +68,154 @@
                         <li class="nav-item">
                             <a href="index.php?halaman=siswa" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>index siswa</p>
+                                <p>Siswa</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="index.php?halaman=tambahsiswa" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>tambah siswa</p>
+                                <p>Tambah Siswa</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?halaman=siswa" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Edit/Ubah Siswa</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <!-- BAGIAN kategori -->
-                <li class="nav-item">
-                    <a href="index.php?halaman=kategori" class="nav-link">
+
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tags"></i>
-                        <p>kategori</p>
+                        <p>
+                            Kategori
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="index.php?halaman=kategori" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p> Kategori</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?halaman=tambahkategori" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tambah Kategori</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?halaman=kategori" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Edit/Ubah Kategori</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
-                <li class="nav-header">kehadiran & absensi</li>
 
-                <li class="nav-item">
-                    <a href="index.php?halaman=absen" class="nav-link">
+                <li class="nav-header">Data Absensi</li>
+                
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-clipboard-list"></i>
-                        <p>absen</p>
+                        <p>
+                            Data  Absen
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="index.php?halaman=absen" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p> Absen</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?halaman=tambahabsen" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tambah Absen</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?halaman=absen" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Edit/Ubah Absen</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <!-- BAGIAN kehadiran -->
-                <li class="nav-item">
-                    <a href="index.php?halaman=kehadiran" class="nav-link">
+
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-calendar-check"></i>
-                        <p>data kehadiran</p>
+                        <p>
+                            Data Sesi Kehadiran
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="index.php?halaman=kehadiran" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p> Sesi Kehadiran</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?halaman=tambahkehadiran" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Buat Sesi Kehadiran</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?halaman=kehadiran" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Edit Sesi Kehadiran</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
-                <li class="nav-item">
-                    <a href="index.php?halaman=detilkehadiran" class="nav-link">
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-search"></i>
-                        <p>detil kehadiran</p>
+                        <p>
+                            Detil kehadiran Siswa
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="index.php?halaman=detilkehadiran" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p> Detil kehadiran siswa</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?halaman=tambahdetil" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tambah Detil kehadiran siswa</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?halaman=detilkehadiran" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Edit Detil Status</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
-                <li class="nav-header">pengguna sistem</li>
+                <li class="nav-header">Pengguna Sistem</li>
 
-                <!-- BAGIAN admin -->
-
-                <li class="nav-item">
+                <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-user-tie"></i>
                         <p>
-                            data admin
+                            Data Admin
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -122,13 +223,19 @@
                         <li class="nav-item">
                             <a href="index.php?halaman=admin" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>profil admin</p>
+                                <p>Index Admin</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="index.php?halaman=tambahadmin" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>tambah admin</p>
+                                <p>Tambah Admin</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?halaman=admin" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Edit/Ubah Admin</p>
                             </a>
                         </li>
                     </ul>
@@ -137,7 +244,7 @@
                 <li class="nav-item">
                     <a href="logout.php" class="nav-link text-danger">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
-                        <p>log out</p>
+                        <p>Log Out</p>
                     </a>
                 </li>
 

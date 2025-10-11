@@ -1,52 +1,59 @@
 <?php
-// File ini hanya menampilkan formulir.
-// Pastikan file 'koneksi.php' sudah di-include di index.php
+// Pastikan file koneksi sudah di-include (sesuaikan path jika berbeda)
+include 'koneksi.php'; 
+
+// Selalu mulai session jika Anda ingin menggunakan session untuk pesan notifikasi
+session_start();
+
+// 1. Cek apakah form sudah disubmit dengan tombol 'simpan'
+if (isset($_POST['simpan'])) {
+    
+    // Ambil data dari formulir
+    $nama_admin = $_POST['namaadmin'];
+    $username = $_POST['username'];
+    $password_plain = $_POST['password']; // Password dari input user
+
+    // =======================================================
+    // 2. ENKRIPSI PASSWORD DENGAN password_hash()
+    // Ini adalah langkah krusial untuk keamanan
+    // =======================================================
+    $password_hashed = password_hash($password_plain, PASSWORD_DEFAULT);
+    
+    // 3. TULIS PERINTAH SQL INSERT
+    // Pastikan nama kolom (e.g., nama_admin, username, password_hash) 
+    // sesuai dengan tabel database Anda.
+    $query = "INSERT INTO admin (nama_admin, username, password) 
+              VALUES ('$nama_admin', '$username', '$password_hashed')";
+    
+    // 4. Eksekusi Query
+    if (mysqli_query($koneksi, $query)) {
+        
+        // Simpan berhasil
+        // Anda bisa menggunakan session untuk menampilkan pesan sukses di halaman admin
+        $_SESSION['pesan'] = "Data admin $nama_admin berhasil ditambahkan!";
+        $_SESSION['tipe_pesan'] = "success"; 
+        
+        // Arahkan kembali ke halaman index admin
+        header('location: index.php?halaman=admin');
+        exit;
+        
+    } else {
+        
+        // Simpan gagal
+        $_SESSION['pesan'] = "Gagal menambahkan data admin! Error: " . mysqli_error($koneksi);
+        $_SESSION['tipe_pesan'] = "danger"; 
+        
+        // Arahkan kembali ke formulir tambah admin
+        header('location: index.php?halaman=tambahadmin');
+        exit;
+    }
+    
+    // Tutup koneksi (opsional, tergantung style coding Anda)
+    mysqli_close($koneksi);
+    
+} else {
+    // Jika diakses tanpa submit form, arahkan ke halaman admin
+    header('location: index.php?halaman=admin');
+    exit;
+}
 ?>
-
-<div class="container-fluid">
-    <div class="row justify-content-center"> <!-- Tambahkan justify-content-center untuk memastikan centering -->
-        <!-- Ubah col-md-8 menjadi col-md-12 untuk lebar penuh pada container, atau col-lg-10 agar tetap ada sedikit margin -->
-        <div class="col-md-12 col-lg-10"> 
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">Form Tambah Data Admin</h3>
-                </div>
-                <!-- /.card-header -->
-                
-                <!-- Form dimulai -->
-                <!-- Action diarahkan ke proses_tambah_admin.php (Pastikan Anda sudah membuatnya) -->
-                <form action="proses_tambah_admin.php" method="POST">
-                    <div class="card-body">
-
-                        <!-- Input Nama Admin -->
-                        <div class="form-group">
-                            <label for="namaadmin">Nama Admin</label>
-                            <input type="text" class="form-control" id="namaadmin" name="namaadmin" required placeholder="Masukkan Nama Lengkap Admin">
-                        </div>
-                        
-                        <!-- Input Username -->
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" required placeholder="Masukkan Username (Contoh: admin_baru)">
-                        </div>
-
-                        <!-- Input Password -->
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required placeholder="Masukkan Password">
-                        </div>
-
-                    </div>
-                    <!-- /.card-body -->
-
-                    <div class="card-footer">
-                        <button type="submit" name="simpan" class="btn btn-primary">Simpan Data Admin</button>
-                        <!-- Tombol kembali ke halaman Data Admin -->
-                        <a href="index.php?halaman=admin" class="btn btn-secondary">Batal</a>
-                    </div>
-                </form>
-            </div>
-            <!-- /.card -->
-        </div>
-    </div>
-</div>
