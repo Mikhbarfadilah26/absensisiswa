@@ -1,58 +1,49 @@
 <?php
-// index.php
+// =======================================================
+// 1. KONEKSI DATABASE
+// =======================================================
+require_once 'koneksi.php';
 
-// =======================================================
-// 1. SISTEM PROTEKSI (GUARD) & START SESSION - DIHAPUS
-// =======================================================
-// session_start(); // Dihapus
-// if (!isset($_SESSION['admin_login']) || $_SESSION['admin_login'] !== true) { // Dihapus
-//     header('location: login.php'); // Dihapus
-//     exit; // Dihapus
-// } // Dihapus
-
-// =======================================================
-// 2. KONEKSI DATABASE
-// =======================================================
-require_once 'koneksi.php'; 
-// Menggunakan require_once agar ada fatal error jika file tidak ditemukan.
-
-// Contoh pengambilan data admin (sekarang tanpa guard, hanya contoh placeholder)
-/*
-$data_admin = ['username' => 'DemoUser', 'nama' => 'Admin Demo']; 
-*/
+// Definisikan path untuk folder views dan pages
+define('VIEWS_PATH', __DIR__ . '/views/');
+define('PAGES_PATH', __DIR__ . '/pages/');
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <?php include 'pages/header.php'; ?>
+    <?php include PAGES_PATH . 'header.php'; ?>
 </head>
 
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse">
 
     <div class="wrapper">
+        <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__wobble" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
         </div>
 
+        <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-dark">
-            <?php include 'pages/navbar.php'; ?>
+            <?php include PAGES_PATH . 'navbar.php'; ?>
         </nav>
+
+        <!-- Sidebar -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <?php include 'pages/sidebar.php'; ?>
+            <?php include PAGES_PATH . 'sidebar.php'; ?>
         </aside>
 
-
+        <!-- Content Wrapper -->
         <div class="content-wrapper">
+            <!-- Header -->
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
                             <h1 class="m-0">
-                                <?php 
-                                // Menampilkan judul halaman saat ini
-                                echo isset($_GET['halaman']) ? ucfirst(str_replace('_', ' ', $_GET['halaman'])) : 'Dashboard'; 
+                                <?php
+                                echo isset($_GET['halaman']) ? ucfirst(str_replace('_', ' ', $_GET['halaman'])) : 'Dashboard';
                                 ?>
                             </h1>
                         </div>
@@ -68,139 +59,136 @@ $data_admin = ['username' => 'DemoUser', 'nama' => 'Admin Demo'];
                 </div>
             </div>
 
+            <!-- Main Content -->
             <section class="content">
                 <?php
-
                 // =======================================================
-                // 3. LOGIKA ROUTING KONTEN (SWITCH CASE)
+                // 2. ROUTING LOGIC
                 // =======================================================
                 if (isset($_GET['halaman'])) {
                     $halaman = $_GET['halaman'];
 
+                    // Sanitasi untuk keamanan
+                    $halaman = preg_replace('/[^a-z0-9_]/i', '', $halaman);
+
                     switch ($halaman) {
 
-                        // LOGOUT - DIHAPUS
-                        /* case "logout":
-                            header('location: logout.php');
-                            exit;
-                            break;
-                        */
-
-                        // BAGIAN DASHBOARD (Case default awal)
+                        // ======= DASHBOARD =======
                         case "dashboard":
                         case "home":
-                            include("views/dashboard.php");
+                            include(VIEWS_PATH . "dashboard.php");
                             break;
-                            
-                        // BAGIAN ADMIN
+
+                        // ======= ADMIN =======
                         case "admin":
-                            include("views/admin/admin.php");
+                            include(VIEWS_PATH . "admin/admin.php");
                             break;
                         case "tambahadmin":
-                            include("views/admin/tambahadmin.php");
+                            include(VIEWS_PATH . "admin/tambahadmin.php");
                             break;
                         case "editadmin":
-                            include("views/admin/editadmin.php");
+                            include(VIEWS_PATH . "admin/editadmin.php");
                             break;
 
-                        // BAGIAN SISWA
+                        // ======= SISWA =======
                         case "siswa":
-                            include("views/siswa/siswa.php");
+                            include(VIEWS_PATH . "siswa/siswa.php");
                             break;
                         case "tambahsiswa":
-                            include("views/siswa/tambahsiswa.php");
+                            include(VIEWS_PATH . "siswa/tambahsiswa.php");
                             break;
                         case "editsiswa":
-                            include("views/siswa/editsiswa.php");
+                            include(VIEWS_PATH . "siswa/editsiswa.php");
                             break;
 
-                        // BAGIAN KELAS
+                        // index.php - Bagian KELAS
                         case "kelas":
-                            include("views/kelas/kelas.php");
+                            // Ganti: include(VIEWS_PATH . "admin/kelas/kelas.php"); 
+                            // Menjadi:
+                            include(VIEWS_PATH . "kelas/kelas.php");
                             break;
                         case "tambahkelas":
-                            include("views/kelas/tambahkelas.php");
+                            // Ganti: include(VIEWS_PATH . "admin/kelas/tambahkelas.php");
+                            // Menjadi:
+                            include(VIEWS_PATH . "kelas/tambahkelas.php");
                             break;
                         case "editkelas":
-                            include("views/kelas/editkelas.php");
+                            // Ganti: include(VIEWS_PATH . "admin/kelas/editkelas.php");
+                            // Menjadi:
+                            include(VIEWS_PATH . "kelas/editkelas.php");
                             break;
 
-                        // BAGIAN ABSEN (Master Tipe Absen)
+                        // ======= ABSEN =======
                         case "absen":
-                            include("views/absen/absen.php");
+                            include(VIEWS_PATH . "absen/absen.php");
                             break;
                         case "tambahabsen":
-                            include("views/absen/tambahabsen.php");
+                            include(VIEWS_PATH . "absen/tambahabsen.php");
                             break;
                         case "editabsen":
-                            include("views/absen/editabsen.php");
+                            include(VIEWS_PATH . "absen/editabsen.php");
                             break;
 
-                        // BAGIAN KEHADIRAN (Master Sesi/Tanggal Kehadiran)
+                        // ======= KEHADIRAN =======
                         case "kehadiran":
-                            include("views/kehadiran/kehadiran.php");
+                            include(VIEWS_PATH . "kehadiran/kehadiran.php");
                             break;
                         case "tambahkehadiran":
-                            include("views/kehadiran/tambahkehadiran.php");
+                            include(VIEWS_PATH . "kehadiran/tambahkehadiran.php");
                             break;
                         case "editkehadiran":
-                            include("views/kehadiran/editkehadiran.php");
+                            include(VIEWS_PATH . "kehadiran/editkehadiran.php");
                             break;
 
-                        // BAGIAN DETIL KEHADIRAN (Status per Siswa)
+                        // ======= DETIL KEHADIRAN =======
                         case "detilkehadiran":
-                            include("views/detilkehadiran/detilkehadiran.php");
+                            include(VIEWS_PATH . "detilkehadiran/detilkehadiran.php");
                             break;
-                        case "tambahdetil": 
-                            include("views/detilkehadiran/tambahdetilkehadiran.php");
+                        case "tambahdetilkehadiran":
+                            include(VIEWS_PATH . "detilkehadiran/tambahdetilkehadiran.php");
                             break;
-                        case "editdetil":
-                            include("views/detilkehadiran/editdetilkehadiran.php");
+                        case "editdetilkehadiran":
+                            include(VIEWS_PATH . "detilkehadiran/editdetilkehadiran.php");
                             break;
 
-                        // BAGIAN KATEGORI
+                        // ======= KATEGORI =======
                         case "kategori":
-                            include("views/kategori/kategori.php");
+                            include(VIEWS_PATH . "kategori/kategori.php");
                             break;
                         case "tambahkategori":
-                            include("views/kategori/tambahkategori.php");
+                            include(VIEWS_PATH . "kategori/tambahkategori.php");
                             break;
                         case "editkategori":
-                            include("views/kategori/editkategori.php");
+                            include(VIEWS_PATH . "kategori/editkategori.php");
                             break;
 
-                        // Default case (Halaman tidak ditemukan)
+                        // ======= DEFAULT (404) =======
                         default:
-                            include("pages/notfound.php");
+                            include(PAGES_PATH . "notfound.php");
                             break;
                     }
                 } else {
-                    // Jika tidak ada parameter 'halaman', tampilkan dashboard secara default
-                    include("views/dashboard.php");
+                    // Default: Dashboard
+                    include(VIEWS_PATH . "dashboard.php");
                 }
                 ?>
             </section>
         </div>
 
-        <aside class="control-sidebar control-sidebar-dark">
-        </aside>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark"></aside>
 
+        <!-- Footer -->
         <footer class="main-footer">
-            <?php include 'pages/footer.php'; ?>
+            <?php include PAGES_PATH . 'footer.php'; ?>
         </footer>
     </div>
-    
+
+    <!-- JS -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <script src="dist/js/adminlte.js"></script>
     <script src="plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
     <script src="plugins/raphael/raphael.min.js"></script>
-    <script src="plugins/jquery-mapael/jquery.mapael.min.js"></script>
-    <script src="plugins/jquery-mapael/maps/usa_states.min.js"></script>
-    <script src="plugins/chart.js/Chart.min.js"></script>
-    <script src="dist/js/demo.js"></script>
-    <script src="dist/js/pages/dashboard2.js"></script>
-</body>
-
-</html>
+    <s

@@ -1,17 +1,21 @@
-<div class="card card-primary">
-    <div class="card-header">
+ <div class="card-header">
         <h3 class="card-title">Form Tambah Siswa</h3>
     </div>
-    <form action="#" method="POST" enctype="multipart/form-data">
+    <form action="db/dbsiswa.php?proses=tambahsiswa" method="POST" enctype="multipart/form-data">
         <div class="card-body">
 
             <div class="form-group">
                 <label for="idkelas">Kelas</label>
                 <select class="form-control" id="idkelas" name="idkelas" required>
                     <option value="">-- Pilih Kelas --</option>
-                    <option value="1">X RPL 1</option>
-                    <option value="2">XI TKJ 2</option>
-                    </select>
+                    <?php
+                    // Ambil data kelas dari database menggunakan koneksi $koneksi yang sudah tersedia
+                    $qk = mysqli_query($koneksi, "SELECT idkelas, namakelas FROM kelas ORDER BY namakelas ASC");
+                    while ($k = mysqli_fetch_assoc($qk)):
+                    ?>
+                        <option value="<?= $k['idkelas']; ?>"><?= htmlspecialchars($k['namakelas']); ?></option>
+                    <?php endwhile; ?>
+                </select>
             </div>
 
             <div class="form-group">
@@ -36,11 +40,11 @@
                         <input type="file" class="custom-file-input" id="fotosiswa" name="fotosiswa" accept="image/*">
                         <label class="custom-file-label" for="fotosiswa">Pilih file foto...</label>
                     </div>
-                    </div>
+                </div>
                 <small class="form-text text-muted">Maksimal ukuran file: 2MB. Format: JPG/PNG.</small>
             </div>
-            
-            </div>
+
+        </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-primary">Simpan Data Siswa</button>
             <button type="reset" class="btn btn-secondary">Reset Form</button>

@@ -1,82 +1,75 @@
 <?php
-// Pastikan $koneksi sudah tersedia dari index.php
+// 1. PERBAIKAN PATH INCLUDE
+// Path ini MUNDUR DUA KALI untuk mencapai ROOT PROYEK (ABSENSI SISWA IKBAR)
+include __DIR__ . '/../../koneksi.php';
 
-// 1. Ambil ID Kelas dari URL
-// Link ke halaman ini seharusnya menyertakan ID, contoh: index.php?halaman=editkelas&id=1
-if (!isset($_GET['id']) || empty($_GET['id'])) {
-    echo "<div class='alert alert-danger'>ID Kelas tidak ditemukan!</div>";
-    // Redirect ke halaman index kelas jika ID tidak ada
-    // echo "<meta http-equiv='refresh' content='2;url=index.php?halaman=kelas'>";
+// Ambil ID kelas dari URL secara aman
+// Perhatikan, link di kelas.php menggunakan parameter 'id'
+$idkelas = $_GET['id'] ?? null;
+
+// Jika idkelas tidak ada di URL, hentikan dengan pesan
+if (!$idkelas) {
+    echo "<p style='color:red;'>ID kelas tidak ditemukan di URL.</p>";
     exit;
 }
 
-$id_kelas = $_GET['id'];
+// Ambil data kelas dari database
+$query = "SELECT * FROM kelas WHERE idkelas = '$idkelas'";
+// 2. PERBAIKAN NAMA VARIABEL KONEKSI ($conn menjadi $koneksi)
+$result = mysqli_query($koneksi, $query);
+$kelas = mysqli_fetch_assoc($result);
 
-// 2. Ambil data Kelas lama dari database
-$query_lama = "SELECT * FROM kelas WHERE id_kelas = '$id_kelas'";
-$result_lama = mysqli_query($koneksi, $query_lama);
-
-if (mysqli_num_rows($result_lama) == 0) {
-    echo "<div class='alert alert-danger'>Data Kelas dengan ID $id_kelas tidak ditemukan!</div>";
+// Jika data kelas tidak ditemukan
+if (!$kelas) {
+    echo "<p style='color:red;'>Data kelas tidak ditemukan di database.</p>";
     exit;
-}
-
-$data_lama = mysqli_fetch_assoc($result_lama);
-$nama_lama = $data_lama['nama_kelas'];
-
-// 3. Proses Update Data (Jika form disubmit)
-if (isset($_POST['update_kelas'])) {
-    // Ambil data baru dari form
-    $nama_baru = mysqli_real_escape_string($koneksi, $_POST['nama_kelas']);
-
-    // Cek apakah nama baru kosong
-    if (empty($nama_baru)) {
-        echo "<div class='alert alert-warning'>Nama kelas tidak boleh kosong!</div>";
-    } else {
-        // Query Update
-        $query_update = "UPDATE kelas SET 
-                            nama_kelas = '$nama_baru'
-                         WHERE id_kelas = '$id_kelas'";
-
-        if (mysqli_query($koneksi, $query_update)) {
-            echo "<div class='alert alert-success'>Kelas berhasil diubah menjadi: **$nama_baru**!</div>";
-            
-            // Refresh data lama agar form menampilkan data yang baru
-            $data_lama['nama_kelas'] = $nama_baru;
-            
-            // Arahkan kembali ke halaman index kelas setelah 2 detik
-            echo "<meta http-equiv='refresh' content='2;url=index.php?halaman=kelas'>";
-        } else {
-            echo "<div class='alert alert-danger'>Gagal mengubah kelas: " . mysqli_error($koneksi) . "</div>";
-        }
-    }
 }
 ?>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">Edit Data Kelas</h3>
-                </div>
-                
-                <form action="" method="post">
-                    <div class="card-body">
-                        
-                        <div class="form-group">
-                            <label for="nama_kelas">Nama Kelas</label>
-                            <input type="text" class="form-control" id="nama_kelas" name="nama_kelas" 
-                                value="<?php echo htmlspecialchars($data_lama['nama_kelas']); ?>" required>
-                        </div>
+<section class="content">
 
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" name="update_kelas" class="btn btn-primary">Simpan Perubahan</button>
-                        <a href="index.php?halaman=kelas" class="btn btn-secondary">Batal</a>
-                    </div>
-                </form>
-            </div>
+    <div class="card shadow-sm">
+        <div class="card-header bg-gradient-primary">
+            <h3 class="card-title text-white">Edit Kelas</h3>
         </div>
+
+        <form action="db/dbkelas.php?proses=edit" method="post" enctype="multipart/form-data">
+            <div class="card-body">
+
+                <input type="hidden" name="idkelas" value="<?= htmlspecialchars($kelas['idkelas'] ?? '') ?>">
+
+                <div class="form-group mb-3">
+                    <label for="namakelas" class="font-weight-bold">Nama Kelas</label>
+                    <input type="text" class="form-control" id="namakelas" name="namakelas"
+                        value="<?= htmlspecialchars($kelas['namakelas'] ?? '') ?>" required
+                        placeholder="Contoh: X IPA 1">
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="fotokelas" class="font-weight-bold">Ganti Foto Kelas (Opsional)</label>
+                    <input type="file" class="form-control-file" id="fotokelas" name="fotokelas" accept="image/*">
+                </div>
+
+                <?php if (!empty($kelas['fotokelas'])): ?>
+                    <div class="mb-3">
+                        <label class="font-weight-bold">Foto lama:</label>
+
+                        <img src="foto/kelas/<?= htmlspecialchars($kelas['fotokelas']) ?>"
+                            width="150" height="150" class="img-thumbnail" alt="Foto Kelas Lama">
+                    </div>
+                <?php endif; ?>
+
+            </div>
+
+            <div class="card-footer text-right">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Simpan Perubahan
+                </button>
+                <a href="index.php?halaman=kelas" class="btn btn-secondary ml-2">
+                    <i class="fas fa-arrow-left"></i> Kembali
+                </a>
+            </div>
+        </form>
+
     </div>
-</div>
+</section>

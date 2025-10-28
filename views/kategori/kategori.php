@@ -1,66 +1,59 @@
 <?php
-// Pastikan koneksi ($koneksi) sudah terdefinisi dan terhubung ke database
-// Ambil data dari tabel kategori
-$query = mysqli_query($koneksi, "SELECT * FROM kategori ORDER BY namakategori ASC");
+include __DIR__ . '/../../koneksi.php';
 
-// Cek jika ada error pada query
-if (!$query) {
-    die("Query Error: " . mysqli_error($koneksi));
+// ======== HAPUS DATA ========
+if (isset($_GET['aksi']) && $_GET['aksi'] == 'hapus') {
+    $idkategori = mysqli_real_escape_string($koneksi, $_GET['idkategori']);
+    $hapus = mysqli_query($koneksi, "DELETE FROM kategori WHERE idkategori='$idkategori'");
+    if ($hapus) {
+        echo "<div class='alert alert-success'>Kategori berhasil dihapus!</div>";
+        echo "<meta http-equiv='refresh' content='2;url=index.php?halaman=kategori'>";
+    } else {
+        echo "<div class='alert alert-danger'>Gagal menghapus kategori: " . mysqli_error($koneksi) . "</div>";
+    }
 }
 ?>
 
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">Data Kategori</h3>
+        <a href="index.php?halaman=tambahkategori" class="btn btn-primary btn-sm float-right">
+            <i class="fas fa-plus"></i> Tambah Kategori
+        </a>
     </div>
 
     <div class="card-body">
-        <div class="col">
-            <a href="index.php?halaman=tambahkategori" class="btn btn-primary float-right btn-sm mb-3">
-                <i class="fas fa-plus"></i> Tambah Kategori
-            </a>
-        </div>
-
-        <table id="example1" class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>No.</th>
+                    <th>No</th>
                     <th>ID Kategori</th>
                     <th>Nama Kategori</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
-
             <tbody>
                 <?php
                 $no = 1;
-                // Lakukan looping selama masih ada data
+                $query = mysqli_query($koneksi, "SELECT * FROM kategori ORDER BY idkategori ASC");
                 while ($data = mysqli_fetch_assoc($query)) :
                 ?>
                     <tr>
                         <td><?= $no++; ?></td>
-
-                        <td><?= htmlspecialchars($data['idkategori']); ?></td>
-
+                        <td><?= $data['idkategori']; ?></td>
                         <td><?= htmlspecialchars($data['namakategori']); ?></td>
-
                         <td>
-                            <a href="index.php?halaman=editkategori&id=<?= $data['idkategori']; ?>" class="btn btn-warning btn-sm">
+                            <a href="index.php?halaman=editkategori&idkategori=<?= $data['idkategori']; ?>" class="btn btn-warning btn-sm">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a href="hapus_kategori.php?id=<?= $data['idkategori']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus data kategori <?= htmlspecialchars($data['namakategori']); ?>?');">
+                            <a href="index.php?halaman=kategori&aksi=hapus&idkategori=<?= $data['idkategori']; ?>"
+                               onclick="return confirm('Yakin ingin menghapus kategori ini?')"
+                               class="btn btn-danger btn-sm">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>
                     </tr>
-                <?php
-                endwhile;
-
-                // Tampilkan pesan jika data kosong
-                if ($no == 1) {
-                    echo '<tr><td colspan="4" class="text-center">Data kategori masih kosong.</td></tr>';
-                }
-                ?>
+                <?php endwhile; ?>
             </tbody>
         </table>
     </div>

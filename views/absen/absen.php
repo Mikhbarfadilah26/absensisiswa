@@ -53,7 +53,8 @@ if (!$query) {
                             <a href="index.php?halaman=editabsen&id=<?= $data['idabsen']; ?>" class="btn btn-warning btn-sm">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a href="hapus_absen.php?id=<?= $data['idabsen']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus data absen tanggal <?= htmlspecialchars($data['tanggal']); ?>?');">
+                            <a href="db/dbabsen.php?hapus=<?= $data['idabsen']; ?>" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Yakin ingin menghapus data absen tanggal <?= htmlspecialchars($data['tanggal']); ?>?');">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>

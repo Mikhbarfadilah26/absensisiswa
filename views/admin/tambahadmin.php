@@ -1,59 +1,57 @@
-<?php
-// Pastikan file koneksi sudah di-include (sesuaikan path jika berbeda)
-include 'koneksi.php'; 
+<section class="content">
 
-// Selalu mulai session jika Anda ingin menggunakan session untuk pesan notifikasi
-session_start();
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary">
+            <h3 class="card-title text-white m-0">Tambah Admin</h3>
+        </div>
 
-// 1. Cek apakah form sudah disubmit dengan tombol 'simpan'
-if (isset($_POST['simpan'])) {
-    
-    // Ambil data dari formulir
-    $nama_admin = $_POST['namaadmin'];
-    $username = $_POST['username'];
-    $password_plain = $_POST['password']; // Password dari input user
+        <form action="db/dbadmin.php?proses=tambah" method="POST" enctype="multipart/form-data">
+            <div class="card-body">
 
-    // =======================================================
-    // 2. ENKRIPSI PASSWORD DENGAN password_hash()
-    // Ini adalah langkah krusial untuk keamanan
-    // =======================================================
-    $password_hashed = password_hash($password_plain, PASSWORD_DEFAULT);
-    
-    // 3. TULIS PERINTAH SQL INSERT
-    // Pastikan nama kolom (e.g., nama_admin, username, password_hash) 
-    // sesuai dengan tabel database Anda.
-    $query = "INSERT INTO admin (nama_admin, username, password) 
-              VALUES ('$nama_admin', '$username', '$password_hashed')";
-    
-    // 4. Eksekusi Query
-    if (mysqli_query($koneksi, $query)) {
-        
-        // Simpan berhasil
-        // Anda bisa menggunakan session untuk menampilkan pesan sukses di halaman admin
-        $_SESSION['pesan'] = "Data admin $nama_admin berhasil ditambahkan!";
-        $_SESSION['tipe_pesan'] = "success"; 
-        
-        // Arahkan kembali ke halaman index admin
-        header('location: index.php?halaman=admin');
-        exit;
-        
-    } else {
-        
-        // Simpan gagal
-        $_SESSION['pesan'] = "Gagal menambahkan data admin! Error: " . mysqli_error($koneksi);
-        $_SESSION['tipe_pesan'] = "danger"; 
-        
-        // Arahkan kembali ke formulir tambah admin
-        header('location: index.php?halaman=tambahadmin');
-        exit;
-    }
-    
-    // Tutup koneksi (opsional, tergantung style coding Anda)
-    mysqli_close($koneksi);
-    
-} else {
-    // Jika diakses tanpa submit form, arahkan ke halaman admin
-    header('location: index.php?halaman=admin');
-    exit;
-}
-?>
+                <div class="form-group mb-3">
+                    <label for="namaadmin" class="fw-bold">Nama Admin</label>
+                    <input type="text" class="form-control" id="namaadmin" name="namaadmin"
+                        placeholder="Masukkan Nama Lengkap Admin" required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="nohp" class="fw-bold">Nomor HP</label>
+                    <input type="text" class="form-control" id="nohp" name="nohp"
+                        placeholder="Nomor Telepon/HP" required>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="username" class="fw-bold">Username</label>
+                    <input type="text" class="form-control" id="username" name="username"
+                        placeholder="Username untuk Login" required>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="password" class="fw-bold">Password</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                        placeholder="Masukkan Password" required>
+                    <small class="form-text text-warning">Password akan dienkripsi saat disimpan.</small>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="fotoadmin" class="fw-bold">Foto Admin</label>
+                    <input type="file" class="form-control mt-2" id="fotoadmin" name="fotoadmin" accept="image/*">
+                </div>
+
+            </div>
+
+            <div class="card-footer text-right">
+                <button type="reset" class="btn btn-warning mr-2">
+                    <i class="fa fa-retweet"></i> Reset
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-save"></i> Simpan
+                </button>
+                <a href="index.php?halaman=admin" class="btn btn-secondary ml-2">
+                    <i class="fas fa-arrow-left"></i> Batal
+                </a>
+            </div>
+        </form>
+    </div>
+
+</section>
