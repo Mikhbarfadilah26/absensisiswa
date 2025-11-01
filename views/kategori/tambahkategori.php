@@ -1,28 +1,30 @@
 <?php
-include __DIR__ . '/../../koneksi.php';
+// Ganti include __DIR__ . '/../../koneksi.php'; jika ini adalah form di dalam folder halaman
+include __DIR__ . '/../../koneksi.php'; 
 
 if (isset($_POST['simpan'])) {
-    $idkategori   = mysqli_real_escape_string($koneksi, $_POST['idkategori']);
+    // Hapus baris $idkategori
+    // $idkategori   = mysqli_real_escape_string($koneksi, $_POST['idkategori']);
     $namakategori = mysqli_real_escape_string($koneksi, $_POST['namakategori']);
 
     // Validasi input
-    if (empty($idkategori) || empty($namakategori)) {
-        echo "<div class='alert alert-warning'>ID dan Nama kategori tidak boleh kosong!</div>";
+    if (empty($namakategori)) { // Hanya cek Nama Kategori
+        echo "<div class='alert alert-warning'>Nama kategori tidak boleh kosong!</div>";
     } else {
-        // Cek apakah ID sudah ada
-        $cek = mysqli_query($koneksi, "SELECT * FROM kategori WHERE idkategori='$idkategori'");
-        if (mysqli_num_rows($cek) > 0) {
-            echo "<div class='alert alert-danger'>ID Kategori <strong>$idkategori</strong> sudah ada!</div>";
-        } else {
-            // Simpan data baru
-            $query = mysqli_query($koneksi, "INSERT INTO kategori (idkategori, namakategori) VALUES ('$idkategori', '$namakategori')");
+        // Hapus Cek ID sudah ada
+        // $cek = mysqli_query($koneksi, "SELECT * FROM kategori WHERE idkategori='$idkategori'");
+        // if (mysqli_num_rows($cek) > 0) {
+        //     echo "<div class='alert alert-danger'>ID Kategori <strong>$idkategori</strong> sudah ada!</div>";
+        // } else {
+            // Simpan data baru tanpa menyertakan idkategori
+            $query = mysqli_query($koneksi, "INSERT INTO kategori (namakategori) VALUES ('$namakategori')");
             if ($query) {
                 echo "<div class='alert alert-success'>Kategori berhasil ditambahkan!</div>";
                 echo "<meta http-equiv='refresh' content='2;url=index.php?halaman=kategori'>";
             } else {
                 echo "<div class='alert alert-danger'>Gagal menambah kategori: " . mysqli_error($koneksi) . "</div>";
             }
-        }
+        // }
     }
 }
 ?>
@@ -34,10 +36,6 @@ if (isset($_POST['simpan'])) {
 
     <form method="POST">
         <div class="card-body">
-            <div class="form-group">
-                <label>ID Kategori</label>
-                <input type="text" name="idkategori" class="form-control" placeholder="Masukkan ID kategori">
-            </div>
             <div class="form-group">
                 <label>Nama Kategori</label>
                 <input type="text" name="namakategori" class="form-control" placeholder="Masukkan nama kategori">

@@ -1,4 +1,14 @@
 <?php
+session_start();
+
+// jika belum login, arahkan ke login.php
+if (!isset($_SESSION['idadmin'])) {
+     header("Location: login.php?pesan=belum_login");
+    exit;
+}
+?>
+
+<?php
 // =======================================================
 // 1. KONEKSI DATABASE
 // =======================================================
@@ -19,47 +29,20 @@ define('PAGES_PATH', __DIR__ . '/pages/');
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse">
 
     <div class="wrapper">
-        <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__wobble" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
         </div>
 
-        <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-dark">
             <?php include PAGES_PATH . 'navbar.php'; ?>
         </nav>
 
-        <!-- Sidebar -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <?php include PAGES_PATH . 'sidebar.php'; ?>
         </aside>
 
-        <!-- Content Wrapper -->
         <div class="content-wrapper">
-            <!-- Header -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">
-                                <?php
-                                echo isset($_GET['halaman']) ? ucfirst(str_replace('_', ' ', $_GET['halaman'])) : 'Dashboard';
-                                ?>
-                            </h1>
-                        </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="index.php?halaman=dashboard">Home</a></li>
-                                <li class="breadcrumb-item active">
-                                    <?php echo isset($_GET['halaman']) ? ucfirst(str_replace('_', ' ', $_GET['halaman'])) : 'Dashboard'; ?>
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main Content -->
+            
             <section class="content">
                 <?php
                 // =======================================================
@@ -89,6 +72,9 @@ define('PAGES_PATH', __DIR__ . '/pages/');
                         case "editadmin":
                             include(VIEWS_PATH . "admin/editadmin.php");
                             break;
+                        case "tampiladmin":
+                            include(VIEWS_PATH . "admin/tampiladmin.php");
+                            break;
 
                         // ======= SISWA =======
                         case "siswa":
@@ -103,18 +89,12 @@ define('PAGES_PATH', __DIR__ . '/pages/');
 
                         // index.php - Bagian KELAS
                         case "kelas":
-                            // Ganti: include(VIEWS_PATH . "admin/kelas/kelas.php"); 
-                            // Menjadi:
                             include(VIEWS_PATH . "kelas/kelas.php");
                             break;
                         case "tambahkelas":
-                            // Ganti: include(VIEWS_PATH . "admin/kelas/tambahkelas.php");
-                            // Menjadi:
                             include(VIEWS_PATH . "kelas/tambahkelas.php");
                             break;
                         case "editkelas":
-                            // Ganti: include(VIEWS_PATH . "admin/kelas/editkelas.php");
-                            // Menjadi:
                             include(VIEWS_PATH . "kelas/editkelas.php");
                             break;
 
@@ -175,20 +155,19 @@ define('PAGES_PATH', __DIR__ . '/pages/');
             </section>
         </div>
 
-        <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark"></aside>
 
-        <!-- Footer -->
         <footer class="main-footer">
             <?php include PAGES_PATH . 'footer.php'; ?>
         </footer>
     </div>
 
-    <!-- JS -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <script src="dist/js/adminlte.js"></script>
     <script src="plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
     <script src="plugins/raphael/raphael.min.js"></script>
-    <s
+    </body>
+</html>
+

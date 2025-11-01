@@ -1,9 +1,12 @@
 <?php
-// Pastikan koneksi ($koneksi) sudah terdefinisi dan terhubung ke database
-// Ambil data dari tabel absen
-$query = mysqli_query($koneksi, "SELECT * FROM absen ORDER BY tanggal DESC");
+// views/absen/absen.php (Asumsi $koneksi sudah tersedia)
 
-// Cek jika ada error pada query
+// Ambil data dari tabel absen dan KATEGORI menggunakan INNER JOIN
+$query = mysqli_query($koneksi, "SELECT T1.*, T2.namakategori 
+                                FROM absen T1
+                                INNER JOIN kategori T2 ON T1.idkategori = T2.idkategori
+                                ORDER BY T1.tanggal DESC");
+
 if (!$query) {
     die("Query Error: " . mysqli_error($koneksi));
 }
@@ -26,8 +29,8 @@ if (!$query) {
                 <tr>
                     <th>No.</th>
                     <th>ID Absen</th>
-                    <th>Nama Absen</th>
-                    <th>Tanggal</th>
+                    <th>Nama Siswa</th>
+                    <th>Pola Kategori</th> <th>Tanggal</th>
                     <th>Jam Masuk</th>
                     <th>Jam Keluar</th>
                     <th>Aksi</th>
@@ -37,19 +40,14 @@ if (!$query) {
             <tbody>
                 <?php
                 $no = 1;
-                // Lakukan looping selama masih ada data
                 while ($data = mysqli_fetch_assoc($query)) :
                 ?>
                     <tr>
                         <td><?= $no++; ?></td>
-
                         <td><?= htmlspecialchars($data['idabsen']); ?></td>
                         <td><?= htmlspecialchars($data['namaabsen']); ?></td>
-                        <td><?= htmlspecialchars($data['tanggal']); ?></td>
-                        <td><?= htmlspecialchars($data['jammasuk']); ?></td>
-                        <td><?= htmlspecialchars($data['jamkeluar']); ?></td>
-
-                        <td>
+                        <td><?= htmlspecialchars($data['namakategori']); ?></td> <td><?= htmlspecialchars($data['tanggal']); ?></td>
+                        <td><?= htmlspecialchars($data['jammasuk'] ?? '-'); ?></td> <td><?= htmlspecialchars($data['jamkeluar'] ?? '-'); ?></td> <td>
                             <a href="index.php?halaman=editabsen&id=<?= $data['idabsen']; ?>" class="btn btn-warning btn-sm">
                                 <i class="fas fa-edit"></i>
                             </a>
@@ -62,9 +60,8 @@ if (!$query) {
                 <?php
                 endwhile;
 
-                // Tampilkan pesan jika data kosong
                 if ($no == 1) {
-                    echo '<tr><td colspan="7" class="text-center">Data absen masih kosong.</td></tr>';
+                    echo '<tr><td colspan="8" class="text-center">Data absen masih kosong.</td></tr>';
                 }
                 ?>
             </tbody>

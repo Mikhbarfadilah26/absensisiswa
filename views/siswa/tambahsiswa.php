@@ -1,4 +1,5 @@
- <div class="card-header">
+<div class="card card-info"> 
+<div class="card-header">
         <h3 class="card-title">Form Tambah Siswa</h3>
     </div>
     <form action="db/dbsiswa.php?proses=tambahsiswa" method="POST" enctype="multipart/form-data">
@@ -38,7 +39,7 @@
                 <div class="input-group">
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="fotosiswa" name="fotosiswa" accept="image/*">
-                        <label class="custom-file-label" for="fotosiswa">Pilih file foto...</label>
+                        <label class="custom-file-label" id="foto_label" for="fotosiswa">Pilih file foto...</label>
                     </div>
                 </div>
                 <small class="form-text text-muted">Maksimal ukuran file: 2MB. Format: JPG/PNG.</small>
@@ -51,3 +52,25 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var fileInput = document.getElementById('fotosiswa');
+        var fileLabel = document.getElementById('foto_label');
+
+        if (fileInput && fileLabel) {
+            // Event listener untuk memantau perubahan pada input file
+            fileInput.addEventListener('change', function(e) {
+                var fileName = e.target.files[0].name;
+                fileLabel.innerHTML = fileName;
+            });
+            
+            // Atur ulang label saat form direset
+            fileInput.form.addEventListener('reset', function() {
+                 setTimeout(function() {
+                    fileLabel.innerHTML = 'Pilih file foto...';
+                 }, 50); // Delay kecil untuk memastikan browser sudah mereset input
+            });
+        }
+    });
+</script>

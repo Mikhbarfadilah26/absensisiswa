@@ -35,40 +35,21 @@ $q_absen_terbaru = mysqli_query($koneksi, "SELECT * FROM absen ORDER BY tanggal 
 $persentase_hadir = ($total_siswa > 0) ? round(($hadir_hari_ini / $total_siswa) * 100) : 0;
 ?>
 
-<!-- =========================================================================
-// TAMPILAN HTML: CONTENT HEADER (JUDUL & BREADCRUMB)
-// ========================================================================= -->
-
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-6">
-                <!-- JUDUL UTAMA HALAMAN -->
+            <div class="col-sm-12"> 
                 <h1 class="m-0">Dashboard Absensi Siswa</h1>
             </div>
-            <div class="col-sm-6">
-                <!-- BREADCRUMB -->
-                <ol class="breadcrumb float-sm-right">
-                    <!-- PERBAIKAN DI SINI: MENGARAHKAN HOME KE DASHBOARD -->
-                    <li class="breadcrumb-item"><a href="index.php?halaman=dashboard">Home</a></li> 
-                    <li class="breadcrumb-item active">Dashboard</li>
-                </ol>
             </div>
-        </div>
     </div>
 </div>
 
-<!-- =========================================================================
-// TAMPILAN HTML: MAIN CONTENT
-// ========================================================================= -->
-
 <section class="content">
     <div class="container-fluid">
-        <!-- RINGKASAN STATISTIK UTAMA (INFO BOX) -->
         <div class="row">
             
             <div class="col-lg-3 col-6">
-                <!-- Total Siswa -->
                 <div class="small-box bg-info">
                     <div class="inner">
                         <h3><?= $total_siswa; ?></h3>
@@ -82,7 +63,6 @@ $persentase_hadir = ($total_siswa > 0) ? round(($hadir_hari_ini / $total_siswa) 
             </div>
 
             <div class="col-lg-3 col-6">
-                <!-- Hadir Hari Ini -->
                 <div class="small-box bg-success">
                     <div class="inner">
                         <h3><?= $hadir_hari_ini; ?></h3>
@@ -96,7 +76,6 @@ $persentase_hadir = ($total_siswa > 0) ? round(($hadir_hari_ini / $total_siswa) 
             </div>
 
             <div class="col-lg-3 col-6">
-                <!-- Izin & Sakit Hari Ini -->
                 <div class="small-box bg-warning">
                     <div class="inner">
                         <h3><?= $izin_hari_ini + $sakit_hari_ini; ?></h3>
@@ -110,7 +89,6 @@ $persentase_hadir = ($total_siswa > 0) ? round(($hadir_hari_ini / $total_siswa) 
             </div>
 
             <div class="col-lg-3 col-6">
-                <!-- Alpha Hari Ini -->
                 <div class="small-box bg-danger">
                     <div class="inner">
                         <h3><?= $alpha_hari_ini; ?></h3>
@@ -124,9 +102,6 @@ $persentase_hadir = ($total_siswa > 0) ? round(($hadir_hari_ini / $total_siswa) 
             </div>
 
         </div>
-        <!-- /.row (STATISTIK) -->
-
-        <!-- BARIS DATA TERBARU & GRAFIK -->
         <div class="row">
             <div class="col-md-6">
                 <div class="card card-primary">
@@ -163,7 +138,6 @@ $persentase_hadir = ($total_siswa > 0) ? round(($hadir_hari_ini / $total_siswa) 
                         <h3 class="card-title">Rasio Kehadiran Hari Ini</h3>
                     </div>
                     <div class="card-body">
-                        <!-- Area untuk chart (Membutuhkan Chart.js) -->
                         <div class="chart-responsive">
                             <canvas id="pieChart" height="150"></canvas>
                         </div>
@@ -172,14 +146,8 @@ $persentase_hadir = ($total_siswa > 0) ? round(($hadir_hari_ini / $total_siswa) 
                 </div>
             </div>
         </div>
-        <!-- /.row (DATA TERBARU & GRAFIK) -->
-
-    </div>
-    <!-- /.container-fluid -->
-</section>
-<!-- /.content -->
-
-<!-- SCRIPT UNTUK CHART (Dibutuhkan jika Anda ingin menampilkan grafik) -->
+        </div>
+    </section>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Memastikan Chart.js dimuat di index.php sebelum script ini dijalankan

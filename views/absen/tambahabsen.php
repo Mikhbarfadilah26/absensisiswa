@@ -1,40 +1,11 @@
 <?php
+// views/absen/tambahabsen.php
 
-// Tambahkan Pengecekan Koneksi ($koneksi) jika belum di-include di index.php
+// Pastikan koneksi ($koneksi) sudah terdefinisi
 if (!isset($koneksi)) {
-    // Pastikan path ke koneksi.php benar, relatif terhadap index.php
+    // Sesuaikan path ke koneksi.php jika perlu
     include 'koneksi.php'; 
 }
-
-
-if (isset($_POST['simpan'])) {
-    // 1. Ambil data dari form dan lakukan sanitasi
-    $namaabsen = mysqli_real_escape_string($koneksi, $_POST['namaabsen']);
-    $tanggal   = mysqli_real_escape_string($koneksi, $_POST['tanggal']);
-    $jammasuk  = mysqli_real_escape_string($koneksi, $_POST['jammasuk']);
-    $jamkeluar = mysqli_real_escape_string($koneksi, $_POST['jamkeluar']); // Bisa kosong/null
-
-    // 2. Query untuk menyimpan data
-    $query_simpan = "INSERT INTO absen (namaabsen, tanggal, jammasuk, jamkeluar) 
-                     VALUES ('$namaabsen', '$tanggal', '$jammasuk', '$jamkeluar')";
-
-    $result = mysqli_query($koneksi, $query_simpan);
-
-    if ($result) {
-        // Redirect menggunakan PHP header() (Jika ob_start() sudah diaktifkan di index.php)
-        // Atau menggunakan echo script jika Anda mengandalkan JS
-        echo "<script>alert('Data Absen berhasil ditambahkan.');window.location='index.php?halaman=absen';</script>";
-        exit(); // PENTING: Hentikan eksekusi kode setelah redirect
-
-    } else {
-        // Tampilkan pesan error jika gagal
-        echo "<script>alert('Gagal menambahkan data Absen. Error: " . mysqli_error($koneksi) . "');window.location='index.php?halaman=tambahabsen';</script>";
-        exit(); // PENTING
-    }
-}
-// Tidak perlu 'else { header('Location: ...'); }' karena fungsi itu akan berjalan jika tidak ada POST,
-// yang mana berarti Anda mencoba mengakses halaman tanpa submit, dan ini baik-baik saja karena 
-// kita akan menampilkan formulir di bawah.
 ?>
 
 <div class="container-fluid">
@@ -44,13 +15,8 @@ if (isset($_POST['simpan'])) {
                 <div class="card-header">
                     <h3 class="card-title">Form Tambah Data Absen</h3>
                 </div>
-                <form action="" method="POST"> 
+                <form action="db/dbabsen.php" method="POST"> 
                     <div class="card-body">
-
-                        <div class="form-group">
-                            <label for="namaabsen">Nama Absen / Siswa</label>
-                            <input type="text" class="form-control" id="namaabsen" name="namaabsen" required placeholder="Masukkan Nama Absen/Siswa">
-                        </div>
 
                         <div class="form-group">
                             <label for="tanggal">Tanggal</label>
@@ -58,16 +24,26 @@ if (isset($_POST['simpan'])) {
                         </div>
 
                         <div class="form-group">
-                            <label for="jammasuk">Jam Masuk</label>
-                            <input type="time" class="form-control" id="jammasuk" name="jammasuk" required placeholder="Contoh: 08:00:00">
+                            <label for="idkategori">Pola Absensi Harian</label>
+                            <select class="form-control" id="idkategori" name="idkategori" required>
+                                <option value="">-- Pilih Pola Absensi --</option>
+                                <?php
+                                // Query untuk mengambil data kategori (idkategori dan namakategori)
+                                $sql_kategori = mysqli_query($koneksi, "SELECT idkategori, namakategori FROM kategori ORDER BY idkategori ASC");
+                                
+                                while ($data_kat = mysqli_fetch_array($sql_kategori)) {
+                                    // Nilai (value) yang dikirim adalah idkategori
+                                    echo '<option value="' . $data_kat['idkategori'] . '">' . htmlspecialchars($data_kat['namakategori']) . '</option>';
+                                }
+                                ?>
+                            </select>
                         </div>
-
                         <div class="form-group">
-                            <label for="jamkeluar">Jam Keluar</label>
-                            <input type="time" class="form-control" id="jamkeluar" name="jamkeluar" placeholder="Contoh: 16:00:00 (Opsional saat pengisian)">
+                            <label for="namaabsen">Nama Absen</label>
+                            <input type="text" class="form-control" id="namaabsen" name="namaabsen" required placeholder="Contoh: Absen Semester Ganjil">
                         </div>
-
-                    </div>
+                        
+                        </div>
                     <div class="card-footer">
                         <button type="submit" name="simpan" class="btn btn-primary">Simpan</button>
                         <a href="index.php?halaman=absen" class="btn btn-secondary">Batal</a>
@@ -77,4 +53,3 @@ if (isset($_POST['simpan'])) {
         </div>
     </div>
 </div>
-

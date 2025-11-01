@@ -19,7 +19,9 @@ $data = mysqli_fetch_assoc($query);
 
 // Proses update jika form disubmit
 if (isset($_POST['update_kategori'])) {
+    // $idkategori tidak perlu diambil dari POST, karena sudah ada dari GET/URL
     $namakategori = mysqli_real_escape_string($koneksi, $_POST['namakategori']);
+    
     if (empty($namakategori)) {
         echo "<div class='alert alert-warning'>Nama kategori tidak boleh kosong!</div>";
     } else {
@@ -42,11 +44,13 @@ if (isset($_POST['update_kategori'])) {
 
         <form method="POST">
             <div class="card-body">
+                <input type="hidden" name="idkategori" value="<?php echo htmlspecialchars($data['idkategori']); ?>">
+
                 <div class="form-group">
-                    <label>ID Kategori</label>
-                    <input type="text" name="idkategori" class="form-control form-control-lg w-100" 
-                           value="<?php echo htmlspecialchars($data['idkategori']); ?>" readonly>
+                    <label>ID Kategori (Tidak Dapat Diubah)</label>
+                    <p class="form-control-static form-control-lg w-100"><?php echo htmlspecialchars($data['idkategori']); ?></p>
                 </div>
+                
                 <div class="form-group mt-3">
                     <label>Nama Kategori</label>
                     <input type="text" name="namakategori" class="form-control form-control-lg w-100"
